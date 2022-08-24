@@ -115,6 +115,8 @@ npm install
 #. npm_build.sh & > npm_output.txt
 npm run build 
 
+cd ./../
+
 
 IMAGE_NAME=react_in_docker
 APP_NAME=react_in_docker
@@ -122,7 +124,45 @@ DOCKER_FILE=Dockerfile.react_in_docker
 NET_NAME=test
 
 
-cd ./../
+echo "docker network rm ${NET_NAME}"
+docker network rm ${NET_NAME}
+
+echo "docker network create rm ${NET_NAME} "
+docker network create ${NET_NAME} 
+
+echo "docker stop ${APP_NAME}"
+docker stop ${APP_NAME}
+echo "docker rm ${APP_NAME}"
+docker rm ${APP_NAME}
+
+
+while true; do
+
+        echo "*********************************"
+        echo "*                               *"
+        echo "* Do you wish to build the      *"
+        echo "* docker image?                 *"
+        echo "*   Press \"B\" build             *"
+        echo "*   Press \"N\" use existing      *"
+        echo "*   image                       *"        
+        echo "*                               *"        
+        echo "*********************************"
+
+
+    read -p "Build or not? [B/N]:" bn
+    case $bn in
+        [Nn]* )  break;;
+        [Bb]* ) docker build -t ${IMAGE_NAME} -f ${DOCKER_FILE} . ; break;;
+        * ) echo "Please answer \"b\" or \"n\".";;
+    esac
+done        
+
+
+
+echo "run -d --net ${NET_NAME} --name ${APP_NAME} -p 8000:8000 ${IMAGE_NAME}"
+#docker run -d --net ${NET_NAME} --name ${APP_NAME} -p 3000:3000 ${IMAGE_NAME} sleep infinity
+
+docker run -d --net ${NET_NAME} --name ${APP_NAME} -p 3000:3000 ${IMAGE_NAME} #sleep infinity
 
 echo "*********************************"
 echo "*                               *"
@@ -158,6 +198,15 @@ echo "*        End Application        *"
 echo "*********************************"
 
 read -p "Press Enter to Terminate Application:" 
+
+echo "docker stop ${APP_NAME}"
+docker stop ${APP_NAME}
+echo "docker rm ${APP_NAME}"
+docker rm ${APP_NAME}
+
+echo "docker network rm ${NET_NAME}"
+docker network rm ${NET_NAME}
+
 
 echo "*********************************"
 echo "*  KILLING ANY PROCESS          *"

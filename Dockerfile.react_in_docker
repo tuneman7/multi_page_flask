@@ -4,7 +4,7 @@ ARG APP_DIR=/app
 #############
 # Build (Prepare Environment) image
 #############
-FROM python:3.10-slim-buster AS build
+FROM ubuntu AS build
 ARG APP_DIR=/app
 
 RUN apt-get update && apt-get install -y \
@@ -26,8 +26,8 @@ RUN npm run build
 #############
 # Deployment image
 #############
-FROM python:3.10-slim-buster as run
-ARG APP_DIR=/app
+#FROM python:3.10-slim-buster as run
+#ARG APP_DIR=/app
 
 #below unnecessary utilizing environment variable
 #copy the main.py with the reference to the non-local redis server
