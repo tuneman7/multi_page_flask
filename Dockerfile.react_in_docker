@@ -1,0 +1,38 @@
+# Base Arguements to leverage across build stages
+ARG APP_DIR=/app
+
+#############
+# Build (Prepare Environment) image
+#############
+FROM python:3.10-slim-buster AS build
+ARG APP_DIR=/app
+
+RUN apt-get update && apt-get install -y \
+  curl \
+  build-essential \
+  libffi-dev \
+  sudo \  
+  nodejs \
+  npm \
+   && rm -rf /var/lib/apt/lists/*
+
+WORKDIR ${APP_DIR}
+COPY ./react-multi-page-website ./
+RUN npm install
+RUN npm run build
+
+#COPY setup_on_ubuntu_docker.sh setup_on_ubuntu_docker.sh
+
+#############
+# Deployment image
+#############
+FROM python:3.10-slim-buster as run
+ARG APP_DIR=/app
+
+#below unnecessary utilizing environment variable
+#copy the main.py with the reference to the non-local redis server
+#COPY  ./src/main_deploy.py ./src/main.py
+
+#HEALTHCHECK --start-period=30s CMD python -c "import requests; requests.get('http://localhost:8000/health', timeout=2)"
+
+CMD ["npm", "start"]
