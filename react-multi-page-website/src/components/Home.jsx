@@ -11,6 +11,7 @@ function Home() {
               src="http://placehold.it/900x400"
               alt=""
             />
+            
           </div>
           <div class="col-lg-5">
             <h1 class="font-weight-light">Home</h1>
