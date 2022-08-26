@@ -179,8 +179,9 @@ while ! $finished; do
         finished=true
         echo "*********************************"
         echo "*                               *"
-        echo "*        react is ready         *"
-        echo "*                               *"
+        echo "* REACT IS RUNNING IN DOCKER    *"
+        echo "* AVAILABLE AT:                 *"
+        echo "*    http://127.0.0.1:3000      *"
         echo "*********************************"
     else
         finished=false
@@ -239,3 +240,5 @@ echo "*                               *"
 echo "*  PROGRAM COMPLETE             *"
 echo "*                               *"
 echo "*********************************"
+
+
